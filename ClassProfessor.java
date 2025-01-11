@@ -7,10 +7,17 @@ class ClassProfessor {
 
     private int opcaDoMenu;
 
+    /**
+     * Construtor da classe que inicializa o menu principal.
+     */
     ClassProfessor() {
         this.opcaDoMenu = 0;
     }
 
+    /**
+     * Inicia o sistema e exibe o menu principal.
+     * O menu permite ao usuário escolher entre acessar uma pasta ou sair do sistema.
+     */
     public void iniciarSistema() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -23,11 +30,11 @@ class ClassProfessor {
 
             switch (opcao) {
                 case 1:
-                    escolherPasta(scanner);
+                    escolherPasta(scanner); // Chama o método para escolher uma pasta
                     break;
                 case 2:
                     System.out.println("Saindo...");
-                    scanner.close();
+                    scanner.close(); // Fecha o scanner ao sair
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -35,6 +42,10 @@ class ClassProfessor {
         }
     }
 
+    /**
+     * Permite ao usuário escolher uma pasta já existente ou criar uma nova.
+     * As pastas existentes são listadas para o usuário escolher.
+     */
     private void escolherPasta(Scanner scanner) {
         File pastaRaiz = new File("Quiz");
         if (!pastaRaiz.exists()) {
@@ -44,7 +55,7 @@ class ClassProfessor {
         File[] subpastas = pastaRaiz.listFiles(File::isDirectory);
         if (subpastas == null || subpastas.length == 0) {
             System.out.println("\nNenhuma pasta encontrada. Crie uma nova pasta para começar.");
-            criarNovaPasta(pastaRaiz, scanner);
+            criarNovaPasta(pastaRaiz, scanner); // Cria nova pasta se não houver nenhuma
             return;
         }
 
@@ -60,14 +71,18 @@ class ClassProfessor {
 
         if (escolha > 0 && escolha <= subpastas.length) {
             File pastaSelecionada = subpastas[escolha - 1];
-            exibirMenuAcoes(pastaSelecionada, scanner);
+            exibirMenuAcoes(pastaSelecionada, scanner); // Exibe o menu de ações para a pasta escolhida
         } else if (escolha == subpastas.length + 1) {
-            criarNovaPasta(pastaRaiz, scanner);
+            criarNovaPasta(pastaRaiz, scanner); // Cria nova pasta caso o usuário escolha essa opção
         } else {
             System.out.println("Escolha inválida.");
         }
     }
 
+    /**
+     * Cria uma nova pasta dentro do diretório raiz.
+     * Solicita o nome da nova pasta e tenta criá-la.
+     */
     private void criarNovaPasta(File pastaRaiz, Scanner scanner) {
         System.out.print("\nDigite o nome da nova pasta: ");
         String nomeNovaPasta = scanner.nextLine().trim();
@@ -80,12 +95,16 @@ class ClassProfessor {
         File novaPasta = new File(pastaRaiz, nomeNovaPasta);
         if (novaPasta.mkdir()) {
             System.out.println("Pasta criada com sucesso: " + novaPasta.getAbsolutePath());
-            exibirMenuAcoes(novaPasta, scanner);
+            exibirMenuAcoes(novaPasta, scanner); // Exibe o menu de ações para a nova pasta
         } else {
             System.out.println("Não foi possível criar a pasta. Talvez ela já exista.");
         }
     }
 
+    /**
+     * Exibe o menu de ações para o usuário realizar operações dentro da pasta escolhida.
+     * O usuário pode adicionar, remover, exibir ou alterar temas dentro da pasta.
+     */
     private void exibirMenuAcoes(File pasta, Scanner scanner) {
         while (opcaDoMenu != 5) {
             System.out.println("\nMenu de Ações - Pasta: " + pasta.getName());
@@ -100,16 +119,16 @@ class ClassProfessor {
 
             switch (opcaDoMenu) {
                 case 1:
-                    adicionarNovoTema(pasta, scanner);
+                    adicionarNovoTema(pasta, scanner); // Chama o método para adicionar um novo tema
                     break;
                 case 2:
-                    removerTema(pasta, scanner);
+                    removerTema(pasta, scanner); // Chama o método para remover um tema
                     break;
                 case 3:
-                    exibirTemas(pasta);
+                    exibirTemas(pasta); // Chama o método para exibir todos os temas
                     break;
                 case 4:
-                    alterarTema(pasta, scanner);
+                    alterarTema(pasta, scanner); // Chama o método para alterar um tema
                     break;
                 case 5:
                     System.out.println("Voltando ao menu principal...");
@@ -121,6 +140,10 @@ class ClassProfessor {
         opcaDoMenu = 0; // Resetar o menu ao sair
     }
 
+    /**
+     * Adiciona um novo tema (arquivo de texto) dentro da pasta selecionada.
+     * O tema é criado com o nome especificado pelo usuário.
+     */
     private void adicionarNovoTema(File pasta, Scanner scanner) {
         System.out.print("\nDigite o nome do novo tema: ");
         String nomeTema = scanner.nextLine().trim();
@@ -142,6 +165,10 @@ class ClassProfessor {
         }
     }
 
+    /**
+     * Remove um tema (arquivo) da pasta selecionada.
+     * O usuário escolhe qual tema deseja excluir, e o arquivo correspondente é deletado.
+     */
     private void removerTema(File pasta, Scanner scanner) {
         File[] arquivos = pasta.listFiles();
         if (arquivos == null || arquivos.length == 0) {
@@ -170,6 +197,10 @@ class ClassProfessor {
         }
     }
 
+    /**
+     * Exibe a lista de todos os temas disponíveis na pasta.
+     * O usuário pode visualizar todos os arquivos de tema dentro da pasta selecionada.
+     */
     private void exibirTemas(File pasta) {
         File[] arquivos = pasta.listFiles();
         if (arquivos == null || arquivos.length == 0) {
@@ -183,6 +214,10 @@ class ClassProfessor {
         }
     }
 
+    /**
+     * Permite ao usuário alterar o conteúdo de um tema (arquivo de texto) dentro da pasta selecionada.
+     * O conteúdo do arquivo é exibido e o usuário pode modificá-lo.
+     */
     private void alterarTema(File pasta, Scanner scanner) {
         // Lista os arquivos dentro da pasta para o usuário escolher qual deseja alterar
         File[] arquivos = pasta.listFiles();
@@ -241,6 +276,10 @@ class ClassProfessor {
         }
     }
 
+    /**
+     * Método principal que inicia o sistema de gerenciamento de temas.
+     * @param args Argumentos da linha de comando (não utilizados aqui)
+     */
     public static void main(String[] args) {
         new ClassProfessor().iniciarSistema();
     }
